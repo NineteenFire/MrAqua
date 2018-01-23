@@ -1254,26 +1254,10 @@ void checkTemp() // called from the main loop to update temperature reading
   }
   if(sensor2Enabled)
   {
-    if(sensorH.isConnected(heatsinkSensor))
-    {
-      float tempHolder;
-      sensorH.requestTemperatures();
-      if(displayInC == false)
-      {
-        tempHolder = sensorH.getTempF(heatsinkSensor);
-        if(tempHolder > 32)temperature2 = temperature2 + sensor2Calibration;
-      }
-      if(displayInC == true)
-      {
-        tempHolder = sensorH.getTempC(heatsinkSensor);
-        if(tempHolder > 0)temperature2 = temperature2 + sensor2Calibration;
-      }
-    }else
-    {
-      //Request temp via serial2 port
-      if(displayInC == true)Serial2.print(F("<TEMPC?>"));
-      if(displayInC == false)Serial2.print(F("<TEMPF?>"));
-    }
+    sensorH.requestTemperatures();
+    if(displayInC == false) temperature2 = sensorH.getTempF(heatsinkSensor);
+    if(displayInC == true)  temperature2 = sensorH.getTempC(heatsinkSensor);
+    temperature2 = temperature2 + sensor2Calibration;
     int intTemperature2 = temperature2;
     if(intTemperature2 > heatsinkFanOnTemp)
     {
