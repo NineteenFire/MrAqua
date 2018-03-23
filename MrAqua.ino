@@ -1,9 +1,37 @@
+/*
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+
+ * THIS SOFTWARE IS PROVIDED BY THE CONTRIBUTORS "AS IS" AND ANY EXPRESS OR 
+ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES 
+ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN
+ * NO EVENT SHALL THE CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR 
+ * BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.  
+ */
+
 // iAqua Aquarium Controller w/ iPhone-like Interface
 // Written by Dan Cunningham, aka AnotherHobby @ plantedtank.net
 // Various updates added by Ryan Truss, aka MrMan
 // Much code was swiped, modified, and integrated or otherwise inspired from other public works
 // All code is public domain, feel free to use, abuse, edit, and share
 // Written for Arduino Mega 2560
+//
+// MrAqua v2.5.3
+// -Fixed feeding restart button to only re-start timer
+// -Updated screen setting menu to update brightness as it's changed rather than waiting till it
+//  dims and then goes bright at a touch
 //
 // MrAqua v2.5.2
 // -Updated feeding to allow not including outlets in feeding routine
@@ -199,7 +227,7 @@
 #include <UTFT.h>  // used to interface with the TFT display
 #include <SdFat.h>
 #include <UTFT_SdRaw.h>
-#include <UTouch.h>  // used to interface with the touch controller on the TFT display
+#include <URTouch.h>  // used to interface with the touch controller on the TFT display
 #include <DS1307RTC.h>
 //#include <DS3232RTC.h>
 #include <TimeLib.h>
@@ -210,8 +238,8 @@
 #include <Adafruit_PWMServoDriver.h> //PCA9865
 
 UTFT myGLCD(SSD1289,38,39,40,41); // start up an instance of the TFT screen
-UTouch myTouch(46,45,44,43,42);  // start up an instance of for touch
-//UTouch myTouch(6, 5, 4, 3, 2); // For standard TFT shield
+URTouch myTouch(46,45,44,43,42);  // start up an instance of for touch
+//URTouch myTouch(6, 5, 4, 3, 2); // For standard TFT shield
 
 // file system object
 SdFat sd;
@@ -499,7 +527,7 @@ boolean backlightTouch = true; // initial setting of true to start the screen br
 
 // if you have a Current Satellite Plus, this is true
 // if you are controlling your lights directly with PWM, this is false
-boolean lightCSP = true;
+boolean lightCSP = false;
 int maxIR = 100; //using e-series
 
 //If PCA9865 is installed this is true, otherwise it is false to use Arduino PWM pins
@@ -726,8 +754,8 @@ void setup()
   myFiles.load(26, 110, 188, 72, "iAqua.raw");
   myGLCD.setColor(255,255,255);
   myGLCD.setFont(arial_bold);
-  myGLCD.print(F("v2.5.1"), CENTER, 292);
-  Serial.println(F("v2.5.1"));
+  myGLCD.print(F("v2.5.3"), CENTER, 292);
+  Serial.println(F("v2.5.3"));
   
   //Check RTC status
   setSyncProvider(RTC.get);
