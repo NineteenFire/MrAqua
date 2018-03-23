@@ -99,8 +99,7 @@ void processMyTouch() // this is a huge block dedicated to processing all touch 
 
     if ((x>=124)&&(x<=172)&&(y>=223)&&(y<=271))  // restart button  
     {     
-      feedingActive=false;
-      screenFeeding();
+      startFeedingTime = now(); // re-start the feeding timer
     }
 
     if ((x>=107)&&(x<=129)&&(y>=294)&&(y<=318))  // home button  
@@ -3012,6 +3011,8 @@ void processMyTouch() // this is a huge block dedicated to processing all touch 
         itoa(screenBrightMem, char6, 10);
         myGLCD.setColor(255, 77, 0);
         myGLCD.print(char6, 191, 264);
+        backLight = map(screenBrightMem,1,10,10,255);
+        analogWrite(screenBrightPin, backLight);
       }
     }
     else if ((x>=145)&&(x<=169)&&(y>=275)&&(y<=299))   // brightness down by one
@@ -3028,6 +3029,8 @@ void processMyTouch() // this is a huge block dedicated to processing all touch 
         itoa(screenBrightMem, char6, 10);
         myGLCD.setColor(255, 77, 0);
         myGLCD.print(char6, 191, 264);
+        backLight = map(screenBrightMem,1,10,10,255);
+        analogWrite(screenBrightPin, backLight);
       }
     }
     break;
