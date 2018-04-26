@@ -52,3 +52,8 @@ This project was based off the iAqua controller written by Dan Cunningham with n
 - [UTFT](http://www.rinkydinkelectronics.com/library.php?id=51)
 - [UTFT_SdRaw](https://platformio.org/lib/show/565/UTFT_SdRaw)
 - [URTouch](http://www.rinkydinkelectronics.com/library.php?id=92)
+
+
+## Setup
+
+If you are using an ecoxotic e-series LED set "lightCSP" to true, otherwise set it to false.  If you are using a PCA9685 chip for PWM set boolean "PCA9685Installed" to true.
